@@ -1,0 +1,51 @@
+{
+  "policy": "Kebijakan Privasi",
+  "password": "Kata Sandi",
+  "forgot": "Lupa kata sandi",
+  "login": "Masuk",
+  "help": "Pusat Bantuan",
+  "processing": "Memproses",
+  "about": "Tentang",
+  "success_login": "Login berhasil. Mengalihkan ke beranda",
+  "invalid_login": "Nama pengguna atau kata sandi tidak valid",
+  "success_logout": "Logout berhasil. Terima kasih telah berkunjung",
+  "disclaimer": {
+    "title": "Disclaimer",
+    "desc": "SMILE (Sistem Monitoring Inventaris Logistik Kesehatan secara Elektronik) adalah aplikasi terpadu yang dirancang oleh Kementerian Kesehatan RI untuk mengelola rantai pasok logistik kesehatan dan rantai dingin serta limbah medis secara real-time. SMILE digunakan oleh tenaga kesehatan dan kesehatan lingkungan, pengelola logistik, dan para pihak penentu kebijakan dan program kesehatan di Indonesia untuk mendukung pelayanan kesehatan yang efisien, transparan dan terjangkau. <br /> UNDP Indonesia memberikan dukungan dalam membangun digital solusi SMILE yang inklusif, beretika dan berkelanjutan."
+  },
+  "close": "Tutup",
+  "privacy_policy": {
+    "title": "Kebijakan Privasi",
+    "sub_title_one": "Kebijakan Privasi untuk SMILE",
+    "effective_date": "Tanggal Efektif: 12-09-2023",
+    "desc_one": "Kebijakan Privasi ini menjelaskan bagaimana kami mengoperasikan aplikasi seluler SMILE (Aplikasi) dan bagaimana kami mengelola data pengguna.",
+    "sub_title_two": "Tidak Ada Pengumpulan Informasi Pribadi",
+    "desc_two": "Kami ingin memberi jaminan kepada Anda bahwa SMILE tidak mengumpulkan, menyimpan, atau memproses informasi pribadi apa pun dari penggunanya. Kami menghormati privasi Anda dan tidak terlibat dalam praktik pengumpulan data yang dapat mengompromikan informasi pribadi Anda.",
+    "sub_title_three": "Informasi Penggunaan",
+    "desc_three": "Meskipun kami tidak mengumpulkan informasi pribadi, kami dapat mengumpulkan informasi non-pribadi yang terkait dengan penggunaan Aplikasi, termasuk:",
+    "sub_desc_three": "Informasi tipe perangkat",
+    "desc_three_next": "Informasi non-pribadi ini digunakan semata-mata untuk tujuan meningkatkan fungsi Aplikasi dan meningkatkan pengalaman pengguna.",
+    "sub_title_four": "Layanan Pihak Ketiga",
+    "desc_four": "Aplikasi dapat menggunakan layanan atau perpustakaan pihak ketiga yang memiliki kebijakan privasi mereka sendiri. Silakan tinjau kebijakan ini jika berlaku.",
+    "sub_title_five": "Privasi Anak-Anak",
+    "desc_five": "Aplikasi ini tidak dimaksudkan untuk digunakan oleh anak-anak di bawah usia 13 tahun. Kami tidak dengan sengaja mengumpulkan atau meminta informasi pribadi dari anak-anak. Jika Anda percaya bahwa kami telah mengumpulkan informasi pribadi dari anak di bawah usia 13 tahun, harap hubungi kami segera.",
+    "sub_title_six": "Perubahan pada Kebijakan Privasi Ini",
+    "desc_six": "Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Kami akan memberi tahu Anda tentang perubahan penting dengan memposting Kebijakan Privasi yang diperbarui dalam Aplikasi.",
+    "sub_title_seven": "Hubungi Kami",
+    "desc_seven": "Jika Anda memiliki pertanyaan atau kekhawatiran tentang Kebijakan Privasi ini atau praktik pengolahan data kami, silakan hubungi kami di"
+  },
+  "help_center": {
+    "title": "Pusat Bantuan",
+    "send_email": "Kirim Email",
+    "no_handphone": "No. Handphone",
+    "whatsapp": "Whatsapp",
+    "smile_help_desk": "SMILE Help Desk",
+    "desc": "Pindai Barcode ini untuk menghubungkan kontak Helpdesk"
+  },
+  "username": {
+    "validation": {
+      "invalid": "Username hanya boleh terdiri dari huruf, angka, titik, dan garis bawah (underscore)"
+    }
+  },
+  "required": "Wajib diisi"
+}

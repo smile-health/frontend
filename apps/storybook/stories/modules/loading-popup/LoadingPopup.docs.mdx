@@ -1,0 +1,41 @@
+import { ArgTypes, Meta, Stories } from '@storybook/blocks'
+
+import * as LoadingPopupStories from './LoadingPopup.stories'
+
+<Meta of={LoadingPopupStories} />
+
+# LoadingPopup
+
+```tsx
+import LoadingPopup from '#components/modules/LoadingPopup' // already in Applayout
+import { useLoadingPopupStore } from '@repo/ui/store/loading.store'
+
+const Pages = () => {
+  const { setLoadingPopup } = useLoadingPopupStore()
+
+  return (
+    <div>
+      <Button {...args} variant="solid" onClick={() => setLoadingPopup(true)}>
+        Show Loading
+      </Button>
+      <LoadingPopup />
+    </div>
+  )
+}
+
+<-----------------------OR-------------------------->
+import { useSetLoadingPopupStore } from '#hooks/useSetLoading'
+
+const Pages = () => {
+  const data = useQuery({...})
+
+  useSetLoadingPopupStore(data.isFetching)
+
+  return (
+    <Pages />
+  )
+}
+
+```
+
+<Stories />

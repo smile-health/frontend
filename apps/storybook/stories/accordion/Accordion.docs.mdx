@@ -1,0 +1,41 @@
+import { ArgTypes, Meta, Stories } from '@storybook/blocks'
+
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionRoot,
+  AccordionTrigger,
+} from '@repo/ui/components/accordion'
+
+import * as AccordionStories from './Accordion.stories'
+
+<Meta of={AccordionStories} />
+
+# Accordion
+
+```tsx
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionRoot,
+  AccordionTrigger,
+} from '@repo/ui/components/accordion'
+```
+
+## AccordionRoot Props
+
+<ArgTypes of={AccordionRoot} />
+
+## AccordionTrigger Props
+
+<ArgTypes of={AccordionTrigger} />
+
+## AccordionContent Props
+
+<ArgTypes of={AccordionContent} />
+
+## AccordionItem Props
+
+<ArgTypes of={AccordionItem} />
+
+<Stories />

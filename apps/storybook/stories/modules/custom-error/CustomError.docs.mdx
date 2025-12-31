@@ -1,0 +1,34 @@
+import { ArgTypes, Meta, Stories } from '@storybook/blocks'
+
+import CustomError from '@repo/ui/components/modules/CustomError'
+
+import * as CustomErrorStories from './CustomError.stories'
+
+<Meta of={CustomErrorStories} />
+
+# CustomError
+
+```tsx
+// 403
+const Pages = () => {
+  usePermission('entity-management')
+
+  return <Pages />
+}
+
+<------------------------------------------------------------------->
+
+// 404 data - services
+export async function detailEntity(id: string): Promise<DetailEntityResponse> {
+  const response = await axios.get(`/main/entities/${id}`, {
+    redirect: true, // redirect when error data not found
+  })
+
+  return response?.data
+}
+
+```
+
+<ArgTypes of={CustomError} />
+
+<Stories />

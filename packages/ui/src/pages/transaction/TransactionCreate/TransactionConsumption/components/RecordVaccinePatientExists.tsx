@@ -1,0 +1,36 @@
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline"
+import { useTranslation } from "react-i18next";
+
+type RecordVaccinePatientExistsProps = {
+  patient_no: string;
+  history: string[];
+};
+
+const RecordVaccinePatientExists = ({ patient_no, history }: RecordVaccinePatientExistsProps) => {
+  const { t } = useTranslation('transactionCreateConsumption') 
+
+  return (
+    <div>
+      <div className="ui-border-[#FFF7ED] ui-bg-[#FFF7ED] ui-flex ui-items-start ui-gap-2 ui-p-2 ui-rounded-sm">
+        <div className="ui-flex-1">
+          <ExclamationCircleIcon className='ui-text-primary-800 ui-h-5 ui-w-5' strokeWidth={2.5} />
+        </div>
+        <div className="ui-flex ui-flex-col ui-gap-2">
+          <p className="ui-text-xs ui-font-normal ui-text-primary-800">
+            {t('patient_identity.patient_has_record.vaccination', { patient_no })}
+          </p>
+
+          <ul className="ui-list-disc ui-pl-3 ui-m-0 ui-space-y-1">
+            {history.map((item, index) => (
+              <li key={`history-vaccine-${index.toString()}`} className="ui-font-normal ui-text-xs ui-text-primary-800">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default RecordVaccinePatientExists

@@ -1,0 +1,4 @@
+export enum PROGRAM_PLAN_APPROACH {
+  VACCINATION = 1,
+  SCREENING = 2,
+}

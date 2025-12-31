@@ -1,0 +1,41 @@
+import { ArgTypes, Meta, Stories } from '@storybook/blocks'
+
+import {
+  Pagination,
+  PaginationContainer,
+  PaginationInfo,
+  PaginationSelectLimit,
+} from '@repo/ui/components/pagination'
+
+import * as PaginationStories from './Pagination.stories'
+
+<Meta of={PaginationStories} />
+
+# Pagination
+
+```tsx
+import {
+  Pagination,
+  PaginationContainer,
+  PaginationInfo,
+  PaginationSelectLimit,
+} from '@repo/ui/components/pagination'
+```
+
+## PaginationContainer Props
+
+<ArgTypes of={PaginationContainer} />
+
+## PaginationSelectLimit Props
+
+<ArgTypes of={PaginationSelectLimit} />
+
+## PaginationInfo Props
+
+<ArgTypes of={PaginationInfo} />
+
+## Pagination Props
+
+<ArgTypes of={Pagination} />
+
+<Stories />

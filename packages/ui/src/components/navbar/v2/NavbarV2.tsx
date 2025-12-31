@@ -1,0 +1,26 @@
+import NavbarSetting from '../bundles-component/NavbarSetting'
+import NavbarAnalysis from './components/NavbarAnalysis'
+import NavbarAnnual from './components/NavbarAnnual'
+import NavbarDisposal from './components/NavbarDisposal'
+import NavbarInventory from './components/NavbarInventory'
+import NavbarOrder from './components/NavbarOrder'
+import NavbarTransactions from './components/NavbarTransactions'
+import NavbarDashboard from './components/NavbarDashboard'
+
+const NavbarV2 = () => {
+  return (
+    <div className="main__nav ui-bg-primary-500 ui-h-10">
+      <div className="ui-container ui-mx-auto ui-flex ui-items-center ui-justify-start ui-text-primary-contrast">
+        <NavbarDashboard />
+        <NavbarAnnual />
+        <NavbarOrder />
+        <NavbarTransactions />
+        <NavbarInventory />
+        <NavbarDisposal />
+        <NavbarAnalysis />
+        <NavbarSetting />
+      </div>
+    </div>
+  )
+}
+export default NavbarV2

@@ -1,0 +1,9 @@
+.turbo
+.vscode
+node_modules
+run.storybook.sh
+run.web.sh
+.git
+apps/web/node_modules
+apps/wms/node_modules
+packages/ui/node_modules

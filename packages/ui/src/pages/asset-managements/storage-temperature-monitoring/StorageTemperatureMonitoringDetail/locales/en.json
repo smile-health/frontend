@@ -1,0 +1,136 @@
+{
+  "page": {
+    "title": "Storage Temperature Detail"
+  },
+  "section": {
+    "device_info": {
+      "title": "Device Information"
+    },
+    "operational_details": {
+      "title": "Operational Details"
+    },
+    "entity": {
+      "title": "Entity"
+    },
+    "budget": {
+      "title": "Budget"
+    },
+    "operational_asset_monitoring_device_relation": {
+      "title": "Operational Asset & Monitoring Device Relation"
+    }
+  },
+  "button": {
+    "more_details": "More Details",
+    "change_status": "Change Operational Status"
+  },
+  "modal": {
+    "change_status": {
+      "title": "Change Operational Status",
+      "fields": {
+        "operational_status": {
+          "label": "Operational Status",
+          "placeholder": "Select operational status"
+        }
+      },
+      "button": {
+        "cancel": "Cancel",
+        "save": "Change"
+      }
+    },
+    "change_threshold": {
+      "title": "Warning Confirmation",
+      "description": "Are you sure want to change this threshold temperature?",
+      "warning": "If you change the temperature threshold, it will affect the capacity projection dashboard calculations",
+      "button": {
+        "cancel": "Cancel",
+        "yes": "Yes, I'm sure"
+      }
+    }
+  },
+  "message": {
+    "storage_temperature_monitoring": "storage temperature monitoring",
+    "temperature_threshold": "temperature threshold"
+  },
+  "data": {
+    "asset_type": "Asset Type",
+    "budget_source": "Budget Source",
+    "budget_year": "Budget Year",
+    "temperature_threshold": {
+      "label": "Temperature Threshold",
+      "minimum": "Min",
+      "maximum": "Max",
+      "button": {
+        "change_threshold": "Change Temperature Threshold",
+        "cancel": "Cancel",
+        "save": "Save Changes"
+      }
+    },
+    "operational_status": "Operational Status",
+    "contact_person": "Person in Charge {{ number }}",
+    "production_year": "Production Year"
+  },
+  "relation_table": {
+    "title": "Asset Temperature & Humidity",
+    "columns": {
+      "description": {
+        "label": "Description"
+      },
+      "sensor": {
+        "label": "Sensor"
+      },
+      "asset_temperature": {
+        "label": "Asset Temperature",
+        "temperature": "Temperature",
+        "humidity": "Humidity",
+        "description": "Description"
+      },
+      "connection_and_power": {
+        "label": "Monitoring Temperature",
+        "connection_status": {
+          "online": "Online",
+          "offline": "Offline"
+        },
+        "power_status": {
+          "connected": "Connected",
+          "disconnected": "Disconnected"
+        }
+      }
+    }
+  },
+  "logger_activity": {
+    "title": "Temperature Logger Activity",
+    "tabs": {
+      "temperature": "Temperature Monitoring",
+      "humidity": "Humidity Monitoring"
+    },
+    "chart": {
+      "value": "{{ value }}",
+      "lower_threshold": "Lower Threshold ({{ metric }})",
+      "upper_threshold": "Upper Threshold ({{ metric }})"
+    },
+    "filters": {
+      "logger": {
+        "label": "Logger",
+        "placeholder": "Select logger"
+      },
+      "date_range": {
+        "label": "Date Period",
+        "placeholder": "Select date range"
+      }
+    },
+    "button": {
+      "search": "Search",
+      "export": "Export"
+    },
+    "activity_table": {
+      "columns": {
+        "date": "Date",
+        "temperature": "Temperature (°C)",
+        "humidity": "Humidity (%)",
+        "cold_chain_status": "Cold Chain Equipment Status",
+        "temperature_threshold": "Temperature Threshold",
+        "humidity_threshold": "Humidity Threshold"
+      }
+    }
+  }
+}
