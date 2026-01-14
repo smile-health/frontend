@@ -1,5 +1,4 @@
-# SMILE FRONTEND
-
+# About
 This document purpose to provide how to install the frontend for SMILE.
 
 ## Using this example
