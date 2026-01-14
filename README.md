@@ -1,6 +1,6 @@
-# SMILE PLATFORM FRONTEND
+# SMILE FRONTEND
 
-This is an official starter frontend Turborepo.
+This document purpose to provide how to install the frontend for SMILE.
 
 ## Using this example
 
