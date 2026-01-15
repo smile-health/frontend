@@ -1,5 +1,5 @@
 # About
-This document purpose to provide how to install the frontend for SMILE.
+This document provides instructions for installing the SMILE frontend.
 
 ## Using this example
 
