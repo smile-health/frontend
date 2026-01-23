@@ -27,6 +27,9 @@ const NavbarSetting = () => {
     showMenuProtocol
   } = useTransactionBeneficiaryConfigFlag()
 
+  // Check if menu items should be shown based on environment variable
+  const showMenuItems = process.env.NEXT_PUBLIC_SHOW_SETTINGS_MENU_ITEMS === 'true'
+
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
       {
@@ -35,31 +38,31 @@ const NavbarSetting = () => {
         sub: [
           {
             subChild: [
-              {
+              ...(showMenuItems ? [{
                 title: t('common:menu.setting.item.user'),
                 url: `/v5/user`,
                 isHidden: !hasPermission('user-view'),
-              },
-              {
+              }] : []),
+              ...(showMenuItems ? [{
                 title: t('common:menu.setting.item.activity'),
                 url: `/v5/activity`,
                 isHidden: !hasPermission('activity-view'),
-              },
-              {
+              }] : []),
+              ...(showMenuItems ? [{
                 title: t('common:menu.setting.item.entity'),
                 url: `/v5/entity`,
                 isHidden: !hasPermission('entity-view'),
-              },
-              {
+              }] : []),
+              ...(showMenuItems ? [{
                 title: t('common:menu.setting.item.budget_source'),
                 url: `/v5/budget-source`,
                 isHidden: !hasPermission('budget-source-view'),
-              },
+              }] : []),
             ],
           },
         ],
       },
-      {
+      ...(showMenuItems ? [{
         title: t('common:menu.dashboard.item.stock_taking'),
         chosenTitle: t('common:menu.dashboard.item.stock_taking'),
         sub: [
@@ -79,8 +82,8 @@ const NavbarSetting = () => {
             ],
           },
         ],
-      },
-      {
+      }] : []),
+      ...(showMenuItems ? [{
         title: t('navbar:nav_material'),
         chosenTitle: t('navbar:nav_material'),
         sub: [
@@ -111,7 +114,7 @@ const NavbarSetting = () => {
             ],
           },
         ],
-      },
+      }] : []),
       {
         title: t('common:menu.setting.item.annual_planning.title'),
         chosenTitle: t('common:menu.setting.item.annual_planning.title'),
@@ -176,13 +179,13 @@ const NavbarSetting = () => {
         ],
       },
     ],
-    [t, program]
+    [t, program, showMenuItems]
   )
 
   const leftSideMenus = useMemo(() => filterLeftMenus(rawMenus), [rawMenus])
 
-  const hasMatchingSubChildUrl = (menu: TLeftMenu, path: string) => {
-    return menu?.sub?.some((child) =>
+  const hasMatchingSubChildUrl = (menu: TLeftMenu, path: string): boolean => {
+    return !!menu?.sub?.some((child) =>
       child?.subChild?.some((subChild) =>
         path.includes(subChild?.url as string)
       )

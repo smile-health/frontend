@@ -16,16 +16,19 @@ import NavbarSubmenuBoxV2 from './NavbarSubmenuBoxV2'
 const NavbarTransactions = () => {
   const { t } = useTranslation(['common', 'navbar'])
   const router = useSmileRouter()
+  
+  // Check if menu should be shown based on environment variable
+  const showMenu = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
       {
         title: t('navbar:nav_transaction_list'),
         url: `/v5/transaction`,
-        isHidden: !hasPermission('transaction-view'),
+        isHidden: !showMenu || !hasPermission('transaction-view'),
       },
     ],
-    [t]
+    [t, showMenu]
   )
 
   const leftSideMenus = useMemo(() => filterSingleMenus(rawMenus), [rawMenus])

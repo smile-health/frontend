@@ -16,21 +16,24 @@ import NavbarSubmenuBoxV2 from './NavbarSubmenuBoxV2'
 const NavbarInventory = () => {
   const { t } = useTranslation(['common', 'navbar'])
   const router = useSmileRouter()
+  
+  // Check if menu should be shown based on environment variable
+  const showMenu = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
       {
         title: t('common:menu.dashboard.item.stock_taking'),
         url: `/v5/stock-opname`,
-        isHidden: !hasPermission('stock-opname-view'),
+        isHidden: !showMenu || !hasPermission('stock-opname-view'),
       },
       {
         title: t('common:menu.inventory.item.reconciliation'),
         url: `/v5/reconciliation`,
-        isHidden: !hasPermission('reconciliation-view'),
+        isHidden: !showMenu || !hasPermission('reconciliation-view'),
       },
     ],
-    [t]
+    [t, showMenu]
   )
 
   const leftSideMenus = useMemo(() => filterSingleMenus(rawMenus), [rawMenus])

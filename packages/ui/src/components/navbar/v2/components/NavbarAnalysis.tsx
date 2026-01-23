@@ -23,6 +23,9 @@ const NavbarAnalysis = () => {
     () => ({ setMenuClicked, menuClicked }),
     [setMenuClicked, menuClicked]
   )
+  
+  // Check if menu should be shown based on environment variable
+  const showMenu = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
 
   const isShowResponseTime = useFeatureIsOn('dashboard.response_time')
   const isShowOrderDifference = useFeatureIsOn('dashboard.order_difference')
@@ -45,7 +48,7 @@ const NavbarAnalysis = () => {
     const program = getProgramStorage()
 
     return [
-      {
+      ...(showMenu ? [{
         title: t('navbar:nav_order'),
         chosenTitle: t('navbar:navbar_order_management'),
         sub: [
@@ -76,8 +79,8 @@ const NavbarAnalysis = () => {
             ],
           },
         ],
-      },
-      {
+      }] : []),
+      ...(showMenu ? [{
         title: t('common:menu.dashboard.item.transaction.title'),
         chosenTitle: t('navbar:navbar_transaction_management'),
         sub: [
@@ -113,8 +116,8 @@ const NavbarAnalysis = () => {
             ],
           },
         ],
-      },
-      {
+      }] : []),
+      ...(showMenu ? [{
         title: t('navbar:navbar_inventory'),
         chosenTitle: t('navbar:navbar_inventory_management'),
         sub: [
@@ -178,7 +181,7 @@ const NavbarAnalysis = () => {
             ],
           },
         ],
-      },
+      }] : []),
       {
         title: t('navbar:navbar_disposal'),
         chosenTitle: t('navbar:navbar_disposal_management'),
@@ -253,6 +256,7 @@ const NavbarAnalysis = () => {
     ]
   }, [
     t,
+    showMenu,
     isShowResponseTime,
     isShowOrderDifference,
     isShowReceptionDistribution,
@@ -273,8 +277,8 @@ const NavbarAnalysis = () => {
     return filterLeftMenus(rawMenus)
   }, [rawMenus])
 
-  const hasMatchingSubChildUrl = (menu: TLeftMenu, path: string) => {
-    return menu?.sub?.some((child) =>
+  const hasMatchingSubChildUrl = (menu: TLeftMenu, path: string): boolean => {
+    return !!menu?.sub?.some((child) =>
       child?.subChild?.some((subChild) =>
         path.includes(subChild?.url as string)
       )

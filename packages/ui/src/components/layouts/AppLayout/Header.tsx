@@ -38,6 +38,9 @@ const Header: React.FC = () => {
 
   const user = getUserStorage()
   const program = useProgram()
+  
+  // Check if menu items should be shown based on environment variable
+  const showMenuItems = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
 
   const { setLoadingPopup } = useLoadingPopupStore()
   const { logout } = useAuth()
@@ -137,7 +140,7 @@ const Header: React.FC = () => {
               <ExportHistory />
             </Link>
           </div>
-          <DropdownNotification />
+          {showMenuItems && <DropdownNotification />}
           <LanguageChanger />
         </div>
 
@@ -162,17 +165,19 @@ const Header: React.FC = () => {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Link
-                href={`/${language}/v5/account`}
-                id="dropdown-header-account"
-              >
-                <DropdownMenuItem>
-                  <div className="ui-my-1 ui-flex ui-gap-3 ui-items-center ui-min-w-60 focus:outline-none">
-                    <Account />
-                    {t('common:dropdown_setting.view_profile')}
-                  </div>
-                </DropdownMenuItem>
-              </Link>
+              {showMenuItems && (
+                <Link
+                  href={`/${language}/v5/account`}
+                  id="dropdown-header-account"
+                >
+                  <DropdownMenuItem>
+                    <div className="ui-my-1 ui-flex ui-gap-3 ui-items-center ui-min-w-60 focus:outline-none">
+                      <Account />
+                      {t('common:dropdown_setting.view_profile')}
+                    </div>
+                  </DropdownMenuItem>
+                </Link>
+              )}
               {hasPermission('global-settings-menu') && (
                 <Link
                   href={`/${language}/v5/global-settings/entity`}
