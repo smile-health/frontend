@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [ main, master, dev, demo ]
     paths:
       - 'frontend/apps/web/**'
       - 'frontend/packages/**'
@@ -10,7 +10,7 @@ on:
       - 'frontend/turbo.json'
       - 'frontend/.npmrc'
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, dev, demo ]
     paths:
       - 'frontend/apps/web/**'
       - 'frontend/packages/**'
