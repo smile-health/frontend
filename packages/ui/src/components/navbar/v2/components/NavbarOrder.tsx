@@ -16,24 +16,21 @@ import NavbarSubmenuBoxV2 from './NavbarSubmenuBoxV2'
 const NavbarOrder = () => {
   const { t } = useTranslation(['common', 'navbar'])
   const router = useSmileRouter()
-  
-  // Check if menu should be shown based on environment variable
-  const showMenu = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
       {
         title: t('navbar:nav_order_list'),
         url: `/v5/order`,
-        isHidden: !showMenu,
+        isHidden: false,
       },
       {
         title: t('common:menu.order.item.ticketing'),
         url: `/v5/ticketing-system`,
-        isHidden: !showMenu || !hasPermission('ticketing-system-view'),
+        isHidden: !hasPermission('ticketing-system-view'),
       },
     ],
-    [t, showMenu]
+    [t]
   )
 
   const leftSideMenus = useMemo(() => filterSingleMenus(rawMenus), [rawMenus])

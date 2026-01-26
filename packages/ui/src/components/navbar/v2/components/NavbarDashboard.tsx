@@ -20,16 +20,17 @@ const NavbarDashboard = () => {
   const router = useSmileRouter()
   const program = getProgramStorage()
   const isShowMicroplanning = useFeatureIsOn('dashboard.microplanning')
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
       {
         title: t('navbar:nav_dashboard_microplanning'),
         url: `/v5/dashboard/microplanning`,
-        isHidden: program?.key !== ProgramEnum.Immunization || !isShowMicroplanning,
+        isHidden: program?.key !== ProgramEnum.Immunization || !isShowMicroplanning || !isShowSmileBasic,
       },
     ],
-    [t, isShowMicroplanning]
+    [t, isShowMicroplanning, isShowSmileBasic]
   )
 
   const leftSideMenus = useMemo(() => filterSingleMenus(rawMenus), [rawMenus])

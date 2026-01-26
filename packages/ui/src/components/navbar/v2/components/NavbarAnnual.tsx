@@ -30,6 +30,7 @@ const NavbarAnnual = () => {
   )
 
   const isShowAnnualCommitment = useFeatureIsOn('annual_commitment')
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
@@ -38,7 +39,8 @@ const NavbarAnnual = () => {
         url: `/v5/annual-planning`,
         isHidden:
           !hasPermission('annual-planning-process-view') ||
-          !isShowAnnualPlanningProcess,
+          !isShowAnnualPlanningProcess ||
+          !isShowSmileBasic,
       },
       {
         title: t('navbar:nav_annual_commitment'),
@@ -46,19 +48,21 @@ const NavbarAnnual = () => {
         isHidden:
           !hasPermission('annual-commitment-view') ||
           !isShowAnnualCommitment ||
-          program?.key !== ProgramEnum.Immunization,
+          program?.key !== ProgramEnum.Immunization ||
+          !isShowSmileBasic,
       },
       {
         title: t('navbar:nav_program_plan'),
         url: `/v5/program-plan`,
         isHidden:
           !hasPermission('program-plan-view') ||
-          !isShowAnnualPlanningProgramPlan,
+          !isShowAnnualPlanningProgramPlan ||
+          !isShowSmileBasic,
       },
       {
         title: t('navbar:nav_realization'),
         url: `/v5/annual-realization`,
-        isHidden: !isShowAnnualPlanningRealization,
+        isHidden: !isShowAnnualPlanningRealization || !isShowSmileBasic,
       },
     ],
     [
@@ -68,6 +72,7 @@ const NavbarAnnual = () => {
       isShowAnnualPlanningProgramPlan,
       isShowAnnualPlanningRealization,
       program?.key,
+      isShowSmileBasic,
     ]
   )
 

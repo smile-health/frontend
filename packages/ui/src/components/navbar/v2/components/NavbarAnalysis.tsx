@@ -24,9 +24,6 @@ const NavbarAnalysis = () => {
     [setMenuClicked, menuClicked]
   )
   
-  // Check if menu should be shown based on environment variable
-  const showMenu = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
-
   const isShowResponseTime = useFeatureIsOn('dashboard.response_time')
   const isShowOrderDifference = useFeatureIsOn('dashboard.order_difference')
   const isShowReceptionDistribution = useFeatureIsOn(
@@ -43,12 +40,13 @@ const NavbarAnalysis = () => {
   const isShowInventoryOverview = useFeatureIsOn('dashboard.inventory_overview')
   const isShowRabies = useFeatureIsOn('dashboard.rabies')
   const isShowLPO = useFeatureIsOn('report_lplpo')
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
   const rawMenus: TLeftMenu[] = useMemo(() => {
     const program = getProgramStorage()
 
     return [
-      ...(showMenu ? [{
+      {
         title: t('navbar:nav_order'),
         chosenTitle: t('navbar:navbar_order_management'),
         sub: [
@@ -67,7 +65,8 @@ const NavbarAnalysis = () => {
                 url: `/v5/dashboard/order-difference`,
                 isHidden:
                   !hasPermission('dashboard-order-difference-view') ||
-                  !isShowOrderDifference,
+                  !isShowOrderDifference
+                  || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_consumption_supply'),
@@ -79,8 +78,8 @@ const NavbarAnalysis = () => {
             ],
           },
         ],
-      }] : []),
-      ...(showMenu ? [{
+      },
+      {
         title: t('common:menu.dashboard.item.transaction.title'),
         chosenTitle: t('navbar:navbar_transaction_management'),
         sub: [
@@ -105,19 +104,20 @@ const NavbarAnalysis = () => {
                 isHidden:
                   !hasPermission('dashboard-asik-view') ||
                   !isShowAsik ||
-                  program?.key !== ProgramEnum.Immunization,
+                  program?.key !== ProgramEnum.Immunization
+                  || !isShowSmileBasic,
               },
               {
                 title: 'Rabies',
                 url: `/v5/dashboard/rabies`,
                 isHidden:
-                  !hasPermission('dashboard-rabies-view') || !isShowRabies,
+                  !hasPermission('dashboard-rabies-view') || !isShowRabies || !isShowSmileBasic,
               },
             ],
           },
         ],
-      }] : []),
-      ...(showMenu ? [{
+      },
+      {
         title: t('navbar:navbar_inventory'),
         chosenTitle: t('navbar:navbar_inventory_management'),
         sub: [
@@ -128,12 +128,13 @@ const NavbarAnalysis = () => {
                 url: `/v5/dashboard/inventory-overview`,
                 isHidden:
                   !hasPermission('dashboard-inventory-overview-view') ||
-                  !isShowInventoryOverview,
+                  !isShowInventoryOverview
+                  || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_on_hand_stock'),
                 url: `/v5/dashboard/stock`,
-                isHidden: !hasPermission('dashboard-stock-view'),
+                isHidden: !hasPermission('dashboard-stock-view') ,
               },
               {
                 title: t('navbar:navbar_inventory_stock_detail'),
@@ -162,26 +163,29 @@ const NavbarAnalysis = () => {
                 url: `/v5/dashboard/stock-availability`,
                 isHidden:
                   !hasPermission('dashboard-stock-availability-view') ||
-                  !isShowStockAvailability,
+                  !isShowStockAvailability
+                  || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_count_stock'),
                 url: `/v5/dashboard/count-stock`,
                 isHidden:
                   !hasPermission('dashboard-count-stock-view') ||
-                  !isShowCountStock,
+                  !isShowCountStock
+                  || !isShowSmileBasic,
               },
               {
                 title: t('navbar:navbar_filling_to_normal_bound'),
                 url: `/v5/dashboard/filling-stock`,
                 isHidden:
                   !hasPermission('dashboard-filling-stock-view') ||
-                  !isShowFillingStock,
+                  !isShowFillingStock
+                  || !isShowSmileBasic,
               },
             ],
           },
         ],
-      }] : []),
+      },
       {
         title: t('navbar:navbar_disposal'),
         chosenTitle: t('navbar:navbar_disposal_management'),
@@ -191,7 +195,7 @@ const NavbarAnalysis = () => {
               {
                 title: t('navbar:navbar_view_disposal_stock'),
                 url: `/v5/stock-pemusnahan`,
-                isHidden: !hasPermission('disposal-list-view'),
+                isHidden: !hasPermission('disposal-list-view') || !isShowSmileBasic,
               },
             ],
           },
@@ -206,7 +210,7 @@ const NavbarAnalysis = () => {
               {
                 title: t('navbar:navbar_activity_user'),
                 url: `v5/report/user-activity`,
-                isHidden: !hasPermission('user-activity-view'),
+                isHidden: !hasPermission('user-activity-view') || !isShowSmileBasic,
               },
             ],
           },
@@ -224,7 +228,8 @@ const NavbarAnalysis = () => {
                 isHidden:
                   !hasPermission('dashboard-monthly-report-view') ||
                   !isShowMonthlyReport ||
-                  program?.key !== ProgramEnum.Immunization,
+                  program?.key !== ProgramEnum.Immunization ||
+                  !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_yearly_report'),
@@ -232,22 +237,23 @@ const NavbarAnalysis = () => {
                 isHidden:
                   !hasPermission('dashboard-yearly-report-view') ||
                   !isShowYearlyReport ||
-                  program?.key !== ProgramEnum.Immunization,
+                  program?.key !== ProgramEnum.Immunization ||
+                  !isShowSmileBasic,
               },
               {
                 title: t('common:menu.report.item.stock_book'),
                 url: `/v5/report/stock-book`,
-                isHidden: !hasPermission('stock-book-view'),
+                isHidden: !hasPermission('stock-book-view') || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_dashboard_download_page'),
                 url: `/v5/dashboard/download`,
-                isHidden: !hasPermission('dashboard-download-view'),
+                isHidden: !hasPermission('dashboard-download-view') || !isShowSmileBasic,
               },
               {
                 title: t('common:menu.analysis.lplpo'),
                 url: `/v5/report/lplpo`,
-                isHidden: !hasPermission('lplpo-view') || !isShowLPO,
+                isHidden: !hasPermission('lplpo-view') || !isShowLPO || !isShowSmileBasic,
               },
             ],
           },
@@ -256,7 +262,6 @@ const NavbarAnalysis = () => {
     ]
   }, [
     t,
-    showMenu,
     isShowResponseTime,
     isShowOrderDifference,
     isShowReceptionDistribution,

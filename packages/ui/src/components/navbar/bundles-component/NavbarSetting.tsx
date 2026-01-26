@@ -5,6 +5,7 @@ import useSmileRouter from '#hooks/useSmileRouter'
 import { hasPermission } from '#shared/permission/index'
 import { getProgramStorage } from '#utils/storage/program'
 import { useTranslation } from 'react-i18next'
+import { useFeatureIsOn } from '@growthbook/growthbook-react'
 
 import NavbarList from '../components/NavbarList'
 import NavbarSubmenuBox from '../components/NavbarSubmenuBox'
@@ -26,9 +27,8 @@ const NavbarSetting = () => {
   const {
     showMenuProtocol
   } = useTransactionBeneficiaryConfigFlag()
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
-  // Check if menu items should be shown based on environment variable
-  const showMenuItems = process.env.NEXT_PUBLIC_SHOW_SETTINGS_MENU_ITEMS === 'true'
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
@@ -38,31 +38,31 @@ const NavbarSetting = () => {
         sub: [
           {
             subChild: [
-              ...(showMenuItems ? [{
+              {
                 title: t('common:menu.setting.item.user'),
                 url: `/v5/user`,
                 isHidden: !hasPermission('user-view'),
-              }] : []),
-              ...(showMenuItems ? [{
+              },
+              {
                 title: t('common:menu.setting.item.activity'),
                 url: `/v5/activity`,
                 isHidden: !hasPermission('activity-view'),
-              }] : []),
-              ...(showMenuItems ? [{
+              },
+              {
                 title: t('common:menu.setting.item.entity'),
                 url: `/v5/entity`,
                 isHidden: !hasPermission('entity-view'),
-              }] : []),
-              ...(showMenuItems ? [{
+              },
+              {
                 title: t('common:menu.setting.item.budget_source'),
                 url: `/v5/budget-source`,
                 isHidden: !hasPermission('budget-source-view'),
-              }] : []),
+              },
             ],
           },
         ],
       },
-      ...(showMenuItems ? [{
+      {
         title: t('common:menu.dashboard.item.stock_taking'),
         chosenTitle: t('common:menu.dashboard.item.stock_taking'),
         sub: [
@@ -82,8 +82,8 @@ const NavbarSetting = () => {
             ],
           },
         ],
-      }] : []),
-      ...(showMenuItems ? [{
+      },
+      {
         title: t('navbar:nav_material'),
         chosenTitle: t('navbar:nav_material'),
         sub: [
@@ -92,14 +92,14 @@ const NavbarSetting = () => {
               {
                 title: t('navbar:nav_material'),
                 url: `/v5/material`,
-                isHidden: !hasPermission('material-view'),
+                isHidden: !hasPermission('material-view')
               },
               {
                 title: t('navbar:nav_material_volume_management'),
                 url: `/v5/material-volume-management`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('material-volume-management-global-view'),
+                  !hasPermission('material-volume-management-global-view') || !isShowSmileBasic,
               },
               {
                 title: t('common:menu.setting.item.import_material_entity'),
@@ -109,12 +109,12 @@ const NavbarSetting = () => {
               {
                 title: t('common:menu.setting.item.protocol'),
                 url: `/v5/protocol`,
-                isHidden: !hasPermission('protocol-view') || !showMenuProtocol,
+                isHidden: !hasPermission('protocol-view') || !showMenuProtocol || !isShowSmileBasic,
               },
             ],
           },
         ],
-      }] : []),
+      },
       {
         title: t('common:menu.setting.item.annual_planning.title'),
         chosenTitle: t('common:menu.setting.item.annual_planning.title'),
@@ -140,7 +140,7 @@ const NavbarSetting = () => {
             ],
           },
         ],
-        isHidden: program?.config?.material?.is_hierarchy_enabled,
+        isHidden: program?.config?.material?.is_hierarchy_enabled || !isShowSmileBasic,
       },
       {
         title: t('navbar:nav_asset'),
@@ -153,7 +153,7 @@ const NavbarSetting = () => {
                 url: `/v5/cold-chain-equipment`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('coldchain-equipment-view'),
+                  !hasPermission('coldchain-equipment-view') || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_manufacture'),
@@ -165,21 +165,21 @@ const NavbarSetting = () => {
                 url: `/v5/asset-management`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('asset-management-view'),
+                  !hasPermission('asset-management-view') || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_communication_provider'),
                 url: `/v5/communication-provider`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('communication-provider-view'),
+                  !hasPermission('communication-provider-view') || !isShowSmileBasic,
               },
             ],
           },
         ],
       },
     ],
-    [t, program, showMenuItems]
+    [t, program, isShowSmileBasic]
   )
 
   const leftSideMenus = useMemo(() => filterLeftMenus(rawMenus), [rawMenus])
