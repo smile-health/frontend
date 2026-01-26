@@ -4,6 +4,7 @@ import { HoverCardRoot } from '#components/hover-card'
 import useSmileRouter from '#hooks/useSmileRouter'
 import { hasPermission } from '#shared/permission/index'
 import { useTranslation } from 'react-i18next'
+import { useFeatureIsOn } from '@growthbook/growthbook-react'
 
 import NavbarList from '../../components/NavbarList'
 import {
@@ -16,26 +17,27 @@ import NavbarSubmenuBoxV2 from './NavbarSubmenuBoxV2'
 const NavbarDisposal = () => {
   const { t } = useTranslation(['common', 'navbar'])
   const router = useSmileRouter()
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
       {
         title: t('navbar:navbar_disposal_shipping'),
         url: `/v5/disposal-shipment`,
-        isHidden: !hasPermission('disposal-distribution-view'),
+        isHidden: !hasPermission('disposal-distribution-view') || !isShowSmileBasic,
       },
       {
         title: t('navbar:navbar_self_disposal'),
         url: `/v5/self-disposal`,
-        isHidden: !hasPermission('self-disposal-view'),
+        isHidden: !hasPermission('self-disposal-view') || !isShowSmileBasic,
       },
       {
         title: t('navbar:navbar_disposal_instruction'),
         url: `/v5/disposal-instruction`,
-        isHidden: !hasPermission('disposal-instruction-view'),
+        isHidden: !hasPermission('disposal-instruction-view') || !isShowSmileBasic,
       },
     ],
-    [t]
+    [t, isShowSmileBasic]
   )
 
   const leftSideMenus = useMemo(() => filterSingleMenus(rawMenus), [rawMenus])

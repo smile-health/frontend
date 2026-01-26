@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { useFeatureIsOn } from '@growthbook/growthbook-react'
 import { Button } from '#components/button'
 import Plus from '#components/icons/Plus'
@@ -21,65 +21,72 @@ type Tabs = Array<{
   featureName: FeatureName
   hasChildTab?: boolean
   childTab?: string[]
+  requiresSmileBasic?: boolean
 }>
 
-const tabs = (t: TFunction, lang: string): Tabs => [
-  {
-    label: t('tab.entity'),
-    url: `/${lang}/v5/global-settings/entity`,
-    featureName: 'entity-global-view',
-  },
-  {
-    label: 'Program',
-    url: `/${lang}/v5/global-settings/program`,
-    featureName: 'program-global-view',
-  },
-  {
-    label: t('tab.user'),
-    url: `/${lang}/v5/global-settings/user`,
-    featureName: 'user-global-view',
-  },
-  // { label: 'Role', url: `/${lang}/v5/global-settings/role` },
-  {
-    label: 'Material',
-    url: `/${lang}/v5/global-settings/material/data`,
-    featureName: 'material-global-view',
-    hasChildTab: true,
-    childTab: ['data', 'volume'],
-  },
-  {
-    label: t('tab.budget_source'),
-    url: `/${lang}/v5/global-settings/budget-source`,
-    featureName: 'budget-source-global-view',
-  },
-  {
-    label: t('tab.manufacturer'),
-    url: `/${lang}/v5/global-settings/manufacturer`,
-    featureName: 'manufacturer-global-view',
-  },
-  {
-    label: t('tab.assets.label'),
-    url: `/${lang}/v5/global-settings/asset/type`,
-    featureName: 'asset-type-global-view',
-    hasChildTab: true,
-    childTab: ['type', 'model', 'vendor', 'pqs'],
-  },
-  {
-    label: t('tab.patient'),
-    url: `/${lang}/v5/global-settings/patient`,
-    featureName: 'patient-global-view',
-  },
-  {
-    label: t('tab.annual_planning_target_group'),
-    url: `/${lang}/v5/global-settings/annual-planning-target-group`,
-    featureName: 'annual-planning-target-group-view',
-  },
-  {
-    label: t('tab.population'),
-    url: `/${lang}/v5/global-settings/population`,
-    featureName: 'population-view',
-  },
-]
+const tabs = (t: TFunction, lang: string): Tabs => {
+  return [
+    {
+      label: t('tab.entity'),
+      url: `/${lang}/v5/global-settings/entity`,
+      featureName: 'entity-global-view',
+    },
+    {
+      label: 'Program',
+      url: `/${lang}/v5/global-settings/program`,
+      featureName: 'program-global-view',
+    },
+    {
+      label: t('tab.user'),
+      url: `/${lang}/v5/global-settings/user`,
+      featureName: 'user-global-view',
+    },
+    // { label: 'Role', url: `/${lang}/v5/global-settings/role` },
+    {
+      label: t('tab.patient'),
+      url: `/${lang}/v5/global-settings/patient`,
+      featureName: 'patient-global-view',
+      requiresSmileBasic: true,
+    },
+    {
+      label: t('tab.annual_planning_target_group'),
+      url: `/${lang}/v5/global-settings/annual-planning-target-group`,
+      featureName: 'annual-planning-target-group-view',
+      requiresSmileBasic: true,
+    },
+    {
+      label: t('tab.population'),
+      url: `/${lang}/v5/global-settings/population`,
+      featureName: 'population-view',
+      requiresSmileBasic: true,
+    },
+    {
+      label: 'Material',
+      url: `/${lang}/v5/global-settings/material/data`,
+      featureName: 'material-global-view',
+      hasChildTab: true,
+      childTab: ['data', 'volume'],
+    },
+    {
+      label: t('tab.budget_source'),
+      url: `/${lang}/v5/global-settings/budget-source`,
+      featureName: 'budget-source-global-view',
+    },
+    {
+      label: t('tab.manufacturer'),
+      url: `/${lang}/v5/global-settings/manufacturer`,
+      featureName: 'manufacturer-global-view',
+    },
+    {
+      label: t('tab.assets.label'),
+      url: `/${lang}/v5/global-settings/asset/type`,
+      featureName: 'asset-type-global-view',
+      hasChildTab: true,
+      childTab: ['type', 'model', 'vendor', 'pqs'],
+      requiresSmileBasic: true,
+    },
+  ]
+}
 
 type TTabsItem = {
   id: string
@@ -113,11 +120,14 @@ const GlobalSettings: React.FC<TProps> = ({
   const router = useSmileRouter()
   const isOnline = useOnlineStatus()
   const pathname = router.pathname
+  
+  
   const isShowAnnualPlanningTargetGroup = useFeatureIsOn(
     'annual_planning.global_target_group'
   )
   const isShowPopulation = useFeatureIsOn('annual_planning.global_population')
   const isShowPatient = useFeatureIsOn('global_setting.patient')
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
   const featureFlags: Record<string, boolean> = {
     'annual-planning-target-group-view': isShowAnnualPlanningTargetGroup,
@@ -133,7 +143,8 @@ const GlobalSettings: React.FC<TProps> = ({
           hasPermission(tab.featureName) &&
           (typeof featureFlags[tab.featureName] === 'undefined' ||
             (typeof featureFlags[tab.featureName] === 'boolean' &&
-              featureFlags[tab.featureName]))
+              featureFlags[tab.featureName])) &&
+          (!tab.requiresSmileBasic || isShowSmileBasic)
       )}
     >
       {childTabs && (

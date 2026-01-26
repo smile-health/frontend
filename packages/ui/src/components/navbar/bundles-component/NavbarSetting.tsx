@@ -5,6 +5,7 @@ import useSmileRouter from '#hooks/useSmileRouter'
 import { hasPermission } from '#shared/permission/index'
 import { getProgramStorage } from '#utils/storage/program'
 import { useTranslation } from 'react-i18next'
+import { useFeatureIsOn } from '@growthbook/growthbook-react'
 
 import NavbarList from '../components/NavbarList'
 import NavbarSubmenuBox from '../components/NavbarSubmenuBox'
@@ -26,6 +27,8 @@ const NavbarSetting = () => {
   const {
     showMenuProtocol
   } = useTransactionBeneficiaryConfigFlag()
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
+
 
   const rawMenus: TLeftMenu[] = useMemo(
     () => [
@@ -89,14 +92,14 @@ const NavbarSetting = () => {
               {
                 title: t('navbar:nav_material'),
                 url: `/v5/material`,
-                isHidden: !hasPermission('material-view'),
+                isHidden: !hasPermission('material-view')
               },
               {
                 title: t('navbar:nav_material_volume_management'),
                 url: `/v5/material-volume-management`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('material-volume-management-global-view'),
+                  !hasPermission('material-volume-management-global-view') || !isShowSmileBasic,
               },
               {
                 title: t('common:menu.setting.item.import_material_entity'),
@@ -106,7 +109,7 @@ const NavbarSetting = () => {
               {
                 title: t('common:menu.setting.item.protocol'),
                 url: `/v5/protocol`,
-                isHidden: !hasPermission('protocol-view') || !showMenuProtocol,
+                isHidden: !hasPermission('protocol-view') || !showMenuProtocol || !isShowSmileBasic,
               },
             ],
           },
@@ -137,7 +140,7 @@ const NavbarSetting = () => {
             ],
           },
         ],
-        isHidden: program?.config?.material?.is_hierarchy_enabled,
+        isHidden: program?.config?.material?.is_hierarchy_enabled || !isShowSmileBasic,
       },
       {
         title: t('navbar:nav_asset'),
@@ -150,7 +153,7 @@ const NavbarSetting = () => {
                 url: `/v5/cold-chain-equipment`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('coldchain-equipment-view'),
+                  !hasPermission('coldchain-equipment-view') || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_manufacture'),
@@ -162,27 +165,27 @@ const NavbarSetting = () => {
                 url: `/v5/asset-management`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('asset-management-view'),
+                  !hasPermission('asset-management-view') || !isShowSmileBasic,
               },
               {
                 title: t('navbar:nav_communication_provider'),
                 url: `/v5/communication-provider`,
                 isHidden:
                   program?.config?.material?.is_hierarchy_enabled ||
-                  !hasPermission('communication-provider-view'),
+                  !hasPermission('communication-provider-view') || !isShowSmileBasic,
               },
             ],
           },
         ],
       },
     ],
-    [t, program]
+    [t, program, isShowSmileBasic]
   )
 
   const leftSideMenus = useMemo(() => filterLeftMenus(rawMenus), [rawMenus])
 
-  const hasMatchingSubChildUrl = (menu: TLeftMenu, path: string) => {
-    return menu?.sub?.some((child) =>
+  const hasMatchingSubChildUrl = (menu: TLeftMenu, path: string): boolean => {
+    return !!menu?.sub?.some((child) =>
       child?.subChild?.some((subChild) =>
         path.includes(subChild?.url as string)
       )
