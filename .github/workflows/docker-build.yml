@@ -2,22 +2,9 @@ name: Build and Push Docker Images
 
 on:
   push:
-    branches: [ main, master, dev, demo ]
-    paths:
-      - 'frontend/apps/web/**'
-      - 'frontend/packages/**'
-      - 'frontend/package.json'
-      - 'frontend/turbo.json'
-      - 'frontend/.npmrc'
+    branches: [main, master, dev, demo]
   pull_request:
-    branches: [ main, master, dev, demo ]
-    paths:
-      - 'frontend/apps/web/**'
-      - 'frontend/packages/**'
-      - 'frontend/package.json'
-      - 'frontend/turbo.json'
-      - 'frontend/.npmrc'
-  workflow_dispatch:
+    branches: [main, master, dev, demo]
 
 env:
   REGISTRY: ghcr.io
