@@ -21,10 +21,11 @@ type Tabs = Array<{
   featureName: FeatureName
   hasChildTab?: boolean
   childTab?: string[]
+  requiresSmileBasic?: boolean
 }>
 
-const tabs = (t: TFunction, lang: string, showMenuItems: boolean): Tabs => {
-  const baseTabs: Tabs = [
+const tabs = (t: TFunction, lang: string): Tabs => {
+  return [
     {
       label: t('tab.entity'),
       url: `/${lang}/v5/global-settings/entity`,
@@ -45,20 +46,20 @@ const tabs = (t: TFunction, lang: string, showMenuItems: boolean): Tabs => {
       label: t('tab.patient'),
       url: `/${lang}/v5/global-settings/patient`,
       featureName: 'patient-global-view',
+      requiresSmileBasic: true,
     },
     {
       label: t('tab.annual_planning_target_group'),
       url: `/${lang}/v5/global-settings/annual-planning-target-group`,
       featureName: 'annual-planning-target-group-view',
+      requiresSmileBasic: true,
     },
     {
       label: t('tab.population'),
       url: `/${lang}/v5/global-settings/population`,
       featureName: 'population-view',
+      requiresSmileBasic: true,
     },
-  ]
-
-  const webAppOnlyTabs: Tabs = [
     {
       label: 'Material',
       url: `/${lang}/v5/global-settings/material/data`,
@@ -82,10 +83,9 @@ const tabs = (t: TFunction, lang: string, showMenuItems: boolean): Tabs => {
       featureName: 'asset-type-global-view',
       hasChildTab: true,
       childTab: ['type', 'model', 'vendor', 'pqs'],
+      requiresSmileBasic: true,
     },
   ]
-
-  return showMenuItems ? [...baseTabs, ...webAppOnlyTabs] : baseTabs
 }
 
 type TTabsItem = {
@@ -121,14 +121,13 @@ const GlobalSettings: React.FC<TProps> = ({
   const isOnline = useOnlineStatus()
   const pathname = router.pathname
   
-  // Check if menu items should be shown based on environment variable
-  const showMenuItems = process.env.NEXT_PUBLIC_SHOW_SETTINGS_MENU_ITEMS === 'true'
   
   const isShowAnnualPlanningTargetGroup = useFeatureIsOn(
     'annual_planning.global_target_group'
   )
   const isShowPopulation = useFeatureIsOn('annual_planning.global_population')
   const isShowPatient = useFeatureIsOn('global_setting.patient')
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
 
   const featureFlags: Record<string, boolean> = {
     'annual-planning-target-group-view': isShowAnnualPlanningTargetGroup,
@@ -139,12 +138,13 @@ const GlobalSettings: React.FC<TProps> = ({
   return isOnline ? (
     <AppLayout
       title={t('dropdown_setting.global_settings')}
-      tabs={tabs(t, language, showMenuItems).filter(
+      tabs={tabs(t, language).filter(
         (tab) =>
           hasPermission(tab.featureName) &&
           (typeof featureFlags[tab.featureName] === 'undefined' ||
             (typeof featureFlags[tab.featureName] === 'boolean' &&
-              featureFlags[tab.featureName]))
+              featureFlags[tab.featureName])) &&
+          (!tab.requiresSmileBasic || isShowSmileBasic)
       )}
     >
       {childTabs && (

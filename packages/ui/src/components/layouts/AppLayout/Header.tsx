@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useMutation } from '@tanstack/react-query'
+import { useFeatureIsOn } from '@growthbook/growthbook-react'
 import { Avatar } from '#components/avatar'
 import {
   DropdownMenuContent,
@@ -38,6 +39,7 @@ const Header: React.FC = () => {
 
   const user = getUserStorage()
   const program = useProgram()
+  const isShowSmileBasic = useFeatureIsOn('feature.smile_basic')
   
   // Check if menu items should be shown based on environment variable
   const showMenuItems = process.env.NEXT_PUBLIC_SHOW_MAIN_MENU_ITEMS === 'true'
@@ -100,7 +102,7 @@ const Header: React.FC = () => {
       </div>
       <div className="ui-flex ui-items-center ui-space-x-4 ui-divide-x-2 ui-divide-[#D9D9D9]">
         <div className="ui-flex ui-items-center ui-gap-4">
-          {hasPermission('global-asset-managements-menu') && (
+          {hasPermission('global-asset-managements-menu') && isShowSmileBasic && (
             <div>
               <Link
                 href={router.getAsLinkGlobal(
@@ -120,17 +122,6 @@ const Header: React.FC = () => {
               </Link>
             </div>
           )}
-          <div>
-            <a
-              href="https://elearning.smile-indonesia.id/"
-              target="_blank"
-              className="ui-flex ui-items-center ui-space-x-3 ui-text-blue-800"
-              rel="noreferrer"
-            >
-              <Book />
-              <div>E-learning</div>
-            </a>
-          </div>
           <div>
             <Link
               href={router.getAsLinkGlobal(`/v5/export-history`)}
