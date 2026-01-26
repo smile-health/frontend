@@ -44,17 +44,11 @@ jobs:
             type=sha,prefix={{branch}}-
             type=raw,value=${{ matrix.service }}-latest,enable={{is_default_branch}}
 
-      - name: Create .npmrc for GitHub Packages
-        run: |
-          echo "@smile-health:registry=https://npm.pkg.github.com" > ./apps/${{ matrix.service }}/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> ./apps/${{ matrix.service }}/.npmrc
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/${{ matrix.service }}
+          context: .
+          file: ./apps/${{ matrix.service }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
