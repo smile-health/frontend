@@ -70,7 +70,7 @@ This Turborepo has some additional tools already setup for you:
 1. Clone the repository:
 
 ```bash
-git https://gitlab.badr.co.id/smile-platform/frontend-turborepo.git
+git git@github.com:smile-health/frontend.git
 ```
 
 2. Navigate to the directory:
