@@ -1,3 +1,12 @@
+/**
+ * Next.js Configuration
+ *
+ * Includes Firebase Cloud Messaging service worker build configuration
+ * to inject environment variables at build time.
+ */
+
+const webpack = require('webpack')
+
 module.exports = {
   env: {
     SITE_TITLE: process.env.SITE_TITLE,
@@ -13,7 +22,6 @@ module.exports = {
     DEVICE_TYPE: process.env.DEVICE_TYPE,
     DATE_FORMAT: process.env.DATE_FORMAT,
     DATE_TIME_FORMAT: process.env.DATE_TIME_FORMAT,
-    FUSIONCHART_LICENSE: process.env.FUSIONCHART_LICENSE,
     API_BIG_DATA_URL: process.env.API_BIG_DATA_URL,
     API_URL_V5: process.env.API_URL_V5,
     CURRENCY: process.env.CURRENCY,
@@ -30,5 +38,91 @@ module.exports = {
   output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
+  },
+
+  // Webpack configuration for Firebase service worker injection
+  webpack: (config, { isServer, nextRuntime }) => {
+    // Only modify client-side webpack config
+    if (!isServer) {
+      // Inject Firebase config into service worker via DefinePlugin
+      // This replaces the %PLACEHOLDER% values in firebase-messaging-sw.js
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'self.__FIREBASE_API_KEY__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_API_KEY || ''),
+          'self.__FIREBASE_AUTH_DOMAIN__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || ''),
+          'self.__FIREBASE_PROJECT_ID__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || ''),
+          'self.__FIREBASE_STORAGE_BUCKET__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || ''),
+          'self.__FIREBASE_MESSAGING_SENDER_ID__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || ''),
+          'self.__FIREBASE_APP_ID__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_APP_ID || ''),
+          'self.__FIREBASE_MEASUREMENT_ID__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || ''),
+          'self.__FIREBASE_VAPID_KEY__': JSON.stringify(process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || ''),
+        })
+      )
+    }
+
+    // Handle service worker files specially
+    config.module.rules.push({
+      test: /firebase-messaging-sw\.js$/,
+      use: [
+        {
+          loader: 'string-replace-loader',
+          options: {
+            multiple: [
+              {
+                search: '%NEXT_PUBLIC_FIREBASE_API_KEY%',
+                replace: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
+                flags: 'g',
+              },
+              {
+                search: '%NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN%',
+                replace: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '',
+                flags: 'g',
+              },
+              {
+                search: '%NEXT_PUBLIC_FIREBASE_PROJECT_ID%',
+                replace: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '',
+                flags: 'g',
+              },
+              {
+                search: '%NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID%',
+                replace: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '',
+                flags: 'g',
+              },
+              {
+                search: '%NEXT_PUBLIC_FIREBASE_APP_ID%',
+                replace: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || '',
+                flags: 'g',
+              },
+            ],
+          },
+        },
+      ],
+    })
+
+    return config
+  },
+
+  // Headers for service worker scope
+  async headers() {
+    return [
+      {
+        source: '/firebase-messaging-sw.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+          {
+            key: 'Service-Worker-Allowed',
+            value: '/',
+          },
+        ],
+      },
+    ]
+  },
+
+  // Rewrites if needed
+  async rewrites() {
+    return []
   },
 }

@@ -35,10 +35,6 @@ input[type='radio'] {
   user-select: none;
 }
 
-/* to remove fusioncharts credit label */
-[pointer-events='bounding-box'] {
-  display: none;
-}
 
 :root {
   --color-primary-50: 224 247 242 !important;

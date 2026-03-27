@@ -1,7 +1,20 @@
+smile-health\frontend\packages\ui\src\hooks\useFirebaseMessaging.ts
+
+/**
+ * Firebase Cloud Messaging Hook
+ *
+ * This hook provides FCM functionality using the NotificationProvider abstraction.
+ * It maintains the same API for backward compatibility while using the new provider internally.
+ */
+
 import { useEffect, useState } from 'react'
 import { toast } from '#components/toast'
 
-import { generateToken, onMessageReceived } from '../utils/firebase'
+import {
+  initializeNotificationProvider,
+  getNotificationProvider,
+  NotificationMessage,
+} from '../lib/notifications'
 import { useNotification } from './useNotification'
 
 const defaultNotificationFilter = {
@@ -21,8 +34,14 @@ export function useFirebaseMessaging() {
     filter: defaultNotificationFilter,
   })
 
-  const onForegroundMessageReceived = () =>
-    onMessageReceived((payload) => {
+  // Initialize provider on mount
+  useEffect(() => {
+    initializeNotificationProvider()
+  }, [])
+
+  const onForegroundMessageReceived = () => {
+    const provider = getNotificationProvider()
+    provider.onForegroundMessage((payload: NotificationMessage) => {
       toast.success({
         type: 'notification',
         notification: {
@@ -73,11 +92,13 @@ export function useFirebaseMessaging() {
       refetchCount()
       refetchNotification()
     })
+  }
 
-  // Fetch token saat permission berubah ke 'granted'
+  // Fetch token when permission changes to 'granted'
   useEffect(() => {
     if (permission === 'granted') {
-      generateToken().then((newToken) => {
+      const provider = getNotificationProvider()
+      provider.getDeviceToken().then((newToken) => {
         if (newToken) {
           setToken(newToken)
         } else {
@@ -87,13 +108,12 @@ export function useFirebaseMessaging() {
     }
   }, [permission])
 
-  // Monitor perubahan permission
+  // Monitor permission changes
   useEffect(() => {
     const interval = setInterval(() => {
       if ('Notification' in window) {
         const current = Notification.permission
         if (current !== permission) {
-          // console.log(`[🔄] Notification permission changed: ${current}`)
           setPermission(current)
         }
       }
@@ -101,6 +121,12 @@ export function useFirebaseMessaging() {
 
     return () => clearInterval(interval)
   }, [permission])
+
+  // Wrapper for generateToken that uses provider
+  const generateToken = async (): Promise<string | null> => {
+    const provider = getNotificationProvider()
+    return provider.getDeviceToken()
+  }
 
   return {
     token,

@@ -34,8 +34,3 @@ input[type='radio'] {
 .unselectable {
   user-select: none;
 }
-
-/* to remove fusioncharts credit label */
-[pointer-events='bounding-box'] {
-  display: none;
-}
