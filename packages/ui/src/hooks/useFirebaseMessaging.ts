@@ -1,5 +1,3 @@
-smile-health\frontend\packages\ui\src\hooks\useFirebaseMessaging.ts
-
 /**
  * Firebase Cloud Messaging Hook
  *

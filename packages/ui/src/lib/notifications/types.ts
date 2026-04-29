@@ -1,4 +1,3 @@
-smile-health\frontend\packages\ui\src\lib\notifications\types.ts
 ```
 
 /**

@@ -1,4 +1,3 @@
-smile-health\frontend\packages\ui\src\utils\firebase.ts
 
 /**
  * Firebase Cloud Messaging Utilities

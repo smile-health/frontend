@@ -1,5 +1,3 @@
-```
-smile-health\frontend\packages\ui\src\lib\notifications\fcm-provider.ts
 
 /**
  * Firebase Cloud Messaging (FCM) Provider Implementation
