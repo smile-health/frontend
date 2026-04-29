@@ -1,4 +1,3 @@
-```
 
 /**
  * Notification Provider Interface

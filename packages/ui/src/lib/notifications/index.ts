@@ -1,4 +1,3 @@
-
 /**
  * Notification Provider Factory
  * Provides a unified interface for creating and accessing notification providers

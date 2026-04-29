@@ -1,4 +1,3 @@
-
 /**
  * Firebase Cloud Messaging Utilities
  *
