@@ -167,7 +167,7 @@ export default function StackedBar<T>({
         },
         color: (context) => {
           const bgColor = context.dataset.backgroundColor as string
-          return getLabelColor(bgColor)
+          return getLabelColor(bgColor) as string
         },
         font: {
           size: 12,
