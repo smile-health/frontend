@@ -10,7 +10,7 @@ import {
 import { Input, InputPassword } from '#components/input'
 import AuthLayout from '#components/layouts/AuthLayout/index'
 import { toast } from '#components/toast'
-import { useFirebaseMessaging } from '#hooks/useFirebaseMessaging'
+import { usePushToken } from '#hooks/usePushToken'
 import { requestlogin, RequestloginBody } from '#services/auth'
 import { useAuth } from '#store/auth.store'
 import { AxiosError } from 'axios'
@@ -43,7 +43,7 @@ type LoginPageProps = {
 const LoginPage: React.FC<LoginPageProps> = ({ isPoc } = {}) => {
 
   const { t } = useTranslation('login')
-  const { token } = useFirebaseMessaging()
+  const { token } = usePushToken()
   const { login } = useAuth()
 
   const {

@@ -1,8 +1,23 @@
 /**
- * Firebase Cloud Messaging Hook
+ * Device Push Token Hook
  *
- * This hook provides FCM functionality using the NotificationProvider abstraction.
- * It maintains the same API for backward compatibility while using the new provider internally.
+ * Provides a vendor-neutral push notification token for the device.
+ * Uses the NotificationProvider abstraction internally (currently Firebase
+ * Cloud Messaging via FCMNotificationProvider), but the consuming code
+ * should not depend on which provider is used.
+ *
+ * == Optional Capability ==
+ * Push notifications are OPTIONAL. A deployer that does not need web push
+ * notifications can leave the Firebase (FCM) env vars unset. In that case
+ * the NoopNotificationProvider is used internally, and this hook returns
+ * `{ token: null, ready: true }`.
+ *
+ * == Login Flow ==
+ * The returned `token` is sent as `fcm_token` in the login request body.
+ * The backend schema (authSchemas.ts) defines `fcm_token` as optional
+ * (`z.string().optional()`), and the login handler wraps the token save in
+ * a try/catch that explicitly "WONT fail the login request". Therefore
+ * nothing in the login flow depends on the push token being available.
  */
 
 import { useEffect, useState } from 'react'
@@ -20,13 +35,14 @@ const defaultNotificationFilter = {
   paginate: 3,
 }
 
-export function useFirebaseMessaging() {
+export function usePushToken() {
   const [token, setToken] = useState<string | null>(null)
   const [permission, setPermission] = useState<NotificationPermission>(
     typeof window !== 'undefined' && 'Notification' in window
       ? Notification.permission
       : 'default'
   )
+  const [ready, setReady] = useState(false)
 
   const { refetchCount, refetchNotification } = useNotification({
     filter: defaultNotificationFilter,
@@ -100,9 +116,15 @@ export function useFirebaseMessaging() {
         if (newToken) {
           setToken(newToken)
         } else {
-          console.error('❌ Failed to generate FCM token')
+          console.warn(
+            '[usePushToken] No FCM token generated — push notifications may not be configured (firebase env vars missing).'
+          )
         }
+        setReady(true)
       })
+    } else {
+      // Permission not granted (denied or default) — mark ready immediately
+      setReady(true)
     }
   }, [permission])
 
@@ -128,6 +150,7 @@ export function useFirebaseMessaging() {
 
   return {
     token,
+    ready,
     generateToken,
     onForegroundMessageReceived,
   }

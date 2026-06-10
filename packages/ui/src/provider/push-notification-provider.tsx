@@ -9,7 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
 } from '#components/dialog'
-import { useFirebaseMessaging } from '#hooks/useFirebaseMessaging'
+import { usePushToken } from '#hooks/usePushToken'
 import { clearNotificationReminder, isReminderValid } from '#utils/notification'
 import { getUserStorage } from '#utils/storage/user'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +20,7 @@ export function PushNotificationProvider({
   children: React.ReactNode
 }>) {
   const { t } = useTranslation(['notification'])
-  const { onForegroundMessageReceived } = useFirebaseMessaging()
+  const { onForegroundMessageReceived } = usePushToken()
   const [showPopup, setShowPopup] = useState(false)
   const userDetails = getUserStorage()
 

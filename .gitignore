@@ -38,8 +38,11 @@ yarn-error.log*
 .env.production
 .env.staging
 
-# turbo
+# Turbo
 .turbo
+
+# Graphify artifacts
+graphify-out/
 
 # ui
 dist/
