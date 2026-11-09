@@ -36,9 +36,6 @@ module.exports = {
   },
   transpilePackages: ['@repo/ui'],
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 
   // Webpack configuration for Firebase service worker injection
   webpack: (config, { isServer, nextRuntime }) => {

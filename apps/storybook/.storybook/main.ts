@@ -18,15 +18,9 @@ const config: StorybookConfig = {
   ],
   addons: [
     getAbsolutePath('@storybook/addon-links'),
-    getAbsolutePath('@storybook/addon-essentials'),
-    {
-      name: getAbsolutePath('@storybook/addon-storysource'),
-      options: {
-        loaderOptions: {
-          injectStoryParameters: true,
-        },
-      },
-    },
+    // Storybook 9+ folds essentials/interactions into core; docs is the
+    // remaining addon. addon-storysource was discontinued upstream.
+    getAbsolutePath('@storybook/addon-docs'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),

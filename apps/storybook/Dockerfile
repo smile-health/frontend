@@ -1,11 +1,11 @@
-FROM node:18-alpine3.19 AS base
+FROM node:24-alpine AS base
 
 FROM base AS builder
 RUN apk update && apk add --no-cache gcompat=1.1.0-r4 && rm -rf /var/cache/apk/*
 WORKDIR /app
 RUN npm install -g turbo@2.5.6
 COPY . .
-RUN turbo prune storybook --docker
+RUN turbo prune storybook-app --docker
 
 FROM base AS installer
 RUN apk update && apk add --no-cache gcompat=1.1.0-r4 && rm -rf /var/cache/apk/*
@@ -13,6 +13,8 @@ WORKDIR /app
 
 # Install dependencies
 COPY --from=builder /app/out/json/ .
+# turbo prune does not carry .npmrc (legacy-peer-deps) into out/json
+COPY --from=builder /app/.npmrc ./.npmrc
 RUN npm install
 
 # Copy source code
@@ -23,7 +25,7 @@ COPY --from=builder /app/out/full/ .
 ENV TURBO_TEAM=storybook
 
 # Build Storybook
-RUN npx turbo build --filter=storybook
+RUN npx turbo build --filter=storybook-app
 
 FROM base AS runner
 WORKDIR /app
