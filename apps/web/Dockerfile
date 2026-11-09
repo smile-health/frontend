@@ -1,4 +1,4 @@
-FROM node:18-alpine3.19 AS base
+FROM node:24-alpine AS base
 
 # This Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
 # Make sure you update both files!
@@ -19,6 +19,8 @@ WORKDIR /app
 
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
+# turbo prune does not carry .npmrc (legacy-peer-deps) into out/json
+COPY --from=builder /app/.npmrc ./.npmrc
 RUN npm install
 
 # Build the project

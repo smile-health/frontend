@@ -2,6 +2,9 @@ import CustomError from '@/components/CustomError';
 import { Provider } from '@/provider';
 import { wrapper } from '@/redux/store';
 import '@/styles/globals.css';
+// Imported here rather than via @import in globals.css: once Tailwind expands
+// its directives that @import is no longer first and Turbopack rejects it.
+import '@/styles/style.css';
 import withLocale from '@/utils/hocs/withLocale';
 import { useOnlineStatus } from '@/utils/useOnlineStatus';
 import '@repo/ui/styles.css';

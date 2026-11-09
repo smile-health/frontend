@@ -1,7 +1,7 @@
 import { useRef } from 'react'
-import { useTimeField } from '@react-aria/datepicker'
-import { useLocale } from '@react-aria/i18n'
-import { useTimeFieldState } from '@react-stately/datepicker'
+import { useTimeField } from 'react-aria'
+import { useLocale } from 'react-aria'
+import { useTimeFieldState } from 'react-stately'
 import cx from '#lib/cx'
 import { AriaTimeFieldProps, TimeValue } from 'react-aria'
 

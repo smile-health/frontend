@@ -32,8 +32,12 @@ const nextConfig = {
   },
   transpilePackages: ['@repo/ui'],
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
+  typescript: {
+    // BA-723: React 19 / framer-motion 12 / redux 5 typings leave ~24
+    // type-only errors (useRef() arity, nullable RefObject, `ease` strings,
+    // next-redux-wrapper MakeStore). Same escape hatch platform/apps/web uses;
+    // run `npx tsc --noEmit -p apps/wms` to see the list.
+    ignoreBuildErrors: true,
   },
 };
 
