@@ -96,4 +96,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
+          # arm64 under QEMU made the Next.js web build exceed the 6h job limit;
+          # the cluster nodes are amd64.
+          platforms: linux/amd64
