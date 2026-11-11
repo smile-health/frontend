@@ -40,5 +40,8 @@
     "react-dom": "^19.3.1",
     "dompurify": "^3.4.17",
     "react-number-format": "^5.4.5"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.14.7"
   }
 }
