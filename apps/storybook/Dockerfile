@@ -1,4 +1,4 @@
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 FROM base AS builder
 RUN apk update && apk add --no-cache gcompat=1.1.0-r4 && rm -rf /var/cache/apk/*
